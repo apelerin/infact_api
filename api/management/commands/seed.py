@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from api.models import Article, Journal, InformationHub, Category
 from django.utils import timezone
-import pytz
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -92,8 +91,6 @@ def create_journals():
 def create_articles():
     """ Create articles """
 
-    science_category = Category.objects.get(name='Science')
-    actuality_category = Category.objects.get(name='Actualité')
     articles = [
         {
             'author': 'Jean-Michel',
