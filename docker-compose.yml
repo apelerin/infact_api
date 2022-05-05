@@ -18,7 +18,7 @@ services:
       retries: 5
   web:
     build: .
-    command: bash -c "python manage.py migrate && pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && pip install -r requirements.txt && python manage.py initialize_journals --mode=fill && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
