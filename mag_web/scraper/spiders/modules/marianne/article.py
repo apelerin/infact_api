@@ -11,12 +11,13 @@ class MarianneArticle:
 
     def crawl_on_article(self):
         title = self.response.xpath('//h1[@class="article__heading"]/text()').get()
-        img_link = self.response.css('.article__header').css('.responsive-image::attr(src)').extract_first()
+        image_link = self.response.css('.article__header').css('.responsive-image::attr(src)').extract_first()
         author = self.response.xpath('//address[@class="article__details"]//a[@rel="author"]/span/text()').get()
         body = self.get_body()
-        payload = {
+        return {
             'title': title,
-            'image_link': img_link,
+            'image_link': image_link,
+            'link': self.url,
             'author': author,
             'body': body
         }
