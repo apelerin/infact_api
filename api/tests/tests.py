@@ -15,12 +15,29 @@ class ApiTest(APITestCase):
         self.factory = APIRequestFactory()
 
     def test_create_journal(self):
+        """ Test API endpoint for creating journal """
         request = self.factory.post(reverse('journal-list'), {
             'name': 'Test journal',
         })
         view_set = JournalViewSet.as_view({'post': 'create'})
         response = view_set(request)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_get_articles(self):
+        """ Test API endpoint for getting list of articles """
+        pass
+
+    def test_get_article(self):
+        """ Test API endpoint for getting single article """
+        pass
+
+    def test_get_categories(self):
+        """ Test API endpoint for getting list of categories """
+        pass
+
+    def test_get_category(self):
+        """ Test API endpoint for getting single category """
+        pass
 
     """
     def test_get_article(self):
