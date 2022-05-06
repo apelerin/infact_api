@@ -13,3 +13,6 @@ Launch one crawler:
 
 `docker exec -ti [web_container_name] python crawl seed --name=crawler_name`
 
+
+Launch demo: 
+`docker exec -ti [web_container_name] python manage.py demo`
