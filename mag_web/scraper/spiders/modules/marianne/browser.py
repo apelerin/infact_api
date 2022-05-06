@@ -4,6 +4,7 @@ from api.models import Journal, Article
 from mag_web.scraper.items import ScraperItemArticle
 from datetime import datetime
 
+
 class MarianneBrowser(Spider):
     name = "marianne"
     start_urls = ["https://www.marianne.net/"]
@@ -15,14 +16,15 @@ class MarianneBrowser(Spider):
             url = response.urljoin(articles_link)
             yield scrapy.Request(url=url, callback=self.parse_article)
 
-
     def parse_article(self, response):
         item = ScraperItemArticle()
         item['title'] = response.xpath('//h1[@class="article__heading"]/text()').get()
+
         # Basic handling of pre-existing articles
         # TODO : Use a better approach with multiple fields
         if Article.objects.filter(title=item['title']).exists():
             return
+
         item['image_link'] = response.css('.article__header').css(
             '.responsive-image::attr(src)').extract_first()
         item['author'] = response.xpath(
@@ -35,7 +37,7 @@ class MarianneBrowser(Spider):
         # Temporary solution to save an Article in database.
         # TODO: Use pipelines to save articles in database
         item.save()
-        #return item
+        # return item
 
     def get_body(self, response):
         # TODO: Parse the entire body of the article
