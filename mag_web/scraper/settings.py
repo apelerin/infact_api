@@ -1,3 +1,15 @@
+import os
+import sys
+
+# DJANGO INTEGRATION
+
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".."))
+# Do not forget the change iCrawler part based on your project name
+os.environ['DJANGO_SETTINGS_MODULE'] = 'infact_server.settings'
+
+import django
+django.setup()
+
 # Scrapy settings for mag_web project
 #
 # For simplicity, this file contains only settings considered important or
@@ -62,9 +74,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'mag_web.pipelines.ScraperPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'scraper.pipelines.ArticlePipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -86,3 +98,5 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'mag_web.extensions.httpcache.FilesystemCacheStorage'
+
+

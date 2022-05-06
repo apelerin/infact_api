@@ -8,7 +8,7 @@
 from itemadapter import ItemAdapter
 
 
-class ScraperPipeline:
+class ArticlePipeline(object):
     def process_item(self, item, spider):
         item.save()
         return item
