@@ -5,6 +5,7 @@ from mag_web.scraper.items import ScraperItemArticle
 from datetime import datetime
 
 
+# TODO: Factorize browser and article page to harmonize when multiple modules exists
 class MarianneBrowser(Spider):
     name = "marianne"
     start_urls = ["https://www.marianne.net/"]
@@ -17,6 +18,7 @@ class MarianneBrowser(Spider):
             yield scrapy.Request(url=url, callback=self.parse_article)
 
     def parse_article(self, response):
+        """ Scrapes the article page and returns a ScraperItemArticle object """
         item = ScraperItemArticle()
         item['title'] = response.xpath('//h1[@class="article__heading"]/text()').get()
 

@@ -11,6 +11,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
 
     def get_queryset(self):
+        # Filter by author
         author = self.request.query_params.get('author', None)
         if author is not None:
             queryset = Article.objects.filter(author=author)
@@ -21,7 +22,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
+    API endpoint that allows categories to be viewed or edited.
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -29,7 +30,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class InformationHubViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
+    API endpoint that allows information hubs to be viewed or edited.
     """
     queryset = InformationHub.objects.all()
     serializer_class = InformationHubSerializer
@@ -37,7 +38,7 @@ class InformationHubViewSet(viewsets.ModelViewSet):
 
 class JournalViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
+    API endpoint that allows journals to be viewed or edited.
     """
     queryset = Journal.objects.all()
     serializer_class = JournalSerializer
