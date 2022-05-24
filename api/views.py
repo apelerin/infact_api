@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from api.serializers import ArticleSerializer, CategorySerializer, InformationHubSerializer, JournalSerializer
 
 
-class ArticleViewSet(viewsets.ModelViewSet):
+class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows articles to be viewed or edited.
     """
@@ -20,7 +20,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows categories to be viewed or edited.
     """
@@ -28,7 +28,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
 
 
-class InformationHubViewSet(viewsets.ModelViewSet):
+class InformationHubViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows information hubs to be viewed or edited.
     """
@@ -36,7 +36,7 @@ class InformationHubViewSet(viewsets.ModelViewSet):
     serializer_class = InformationHubSerializer
 
 
-class JournalViewSet(viewsets.ModelViewSet):
+class JournalViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows journals to be viewed or edited.
     """

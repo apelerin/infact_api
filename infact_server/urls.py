@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 import api.views as views
-from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 from django.views.generic import TemplateView
 
@@ -29,7 +28,7 @@ router.register(r'categories', views.CategoryViewSet)
 router.register(r'information_hubs', views.InformationHubViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
     path('openapi', get_schema_view(
         title="Your Project",
         description="API for all things …"
@@ -38,6 +37,5 @@ urlpatterns = [
         template_name='swagger-ui.html',
         extra_context={'schema_url':'openapi-schema'}
     ), name='swagger-ui'),
-    path('docs/', include_docs_urls(title='Snippet API')),
     path('admin/', admin.site.urls),
 ]
