@@ -1,21 +1,26 @@
 version: "3.9"
 
+volumes:
+  postgres-data: {}
+
+
 services:
   db:
     image: postgres
     user: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_NAME=${PG_NAME}
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
   web:
     build: .
     command: bash -c "python manage.py migrate && pip install -r requirements.txt && python manage.py initialize_journals --mode=fill && python manage.py runserver 0.0.0.0:8000"
@@ -24,9 +29,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_NAME=${PG_NAME}
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - DB_HOST=db
+      - POSTGRES_PORT=${PG_PORT}
     depends_on:
       db:
         condition: service_healthy

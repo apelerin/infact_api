@@ -1,0 +1,42 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Copy repository contents via scp
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_KEY }}
+        source: .
+        target: ./infact
+
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_KEY }}
+        script: |
+          cd infact
+          # updating the .env file
+          cat <<EOF > .env
+          # start of envfile
+          PG_NAME=${{ secrets.PG_NAME }}
+          PG_USER=${{ secrets.PG_USER }}
+          PG_PASSWORD=${{ secrets.PG_PASSWORD }}
+          PG_PORT=${{ secrets.PG_PORT }}
+          # end of envfile
+          EOF
+          # see end result of envfile
+          DOCKER_BUILDKIT=1 docker compose up -d
