@@ -13,9 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
+
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework import routers, permissions
 import api.views as views
 from rest_framework.schemas import get_schema_view
 from django.views.generic import TemplateView
@@ -31,11 +33,13 @@ urlpatterns = [
     path('', include(router.urls)),
     path('openapi', get_schema_view(
         title="Your Project",
-        description="API for all things …"
+        description="API for all things …",
+        public=True,
+        permission_classes=(permissions.AllowAny,)
     ), name='openapi-schema'),
     path('swagger-ui/', TemplateView.as_view(
         template_name='swagger-ui.html',
-        extra_context={'schema_url':'openapi-schema'}
+        extra_context={'schema_url':'openapi-schema'},
     ), name='swagger-ui'),
     path('admin/', admin.site.urls),
 ]
