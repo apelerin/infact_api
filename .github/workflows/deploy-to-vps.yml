@@ -36,7 +36,10 @@ jobs:
           PG_USER=${{ secrets.PG_USER }}
           PG_PASSWORD=${{ secrets.PG_PASSWORD }}
           PG_PORT=${{ secrets.PG_PORT }}
+          DEBUG=${{ secrets.DEBUG_PRODUCTION }}
           # end of envfile
           EOF
           # see end result of envfile
-          DOCKER_BUILDKIT=1 docker compose up -d
+          docker compose stop
+          DOCKER_BUILDKIT=1 docker compose build
+          docker compose up -d
