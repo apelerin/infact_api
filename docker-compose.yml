@@ -34,6 +34,7 @@ services:
       - POSTGRES_PASSWORD=${PG_PASSWORD}
       - DB_HOST=db
       - POSTGRES_PORT=${PG_PORT}
+      - RAPIDAPI_PROXY_KEY=${RAPIDAPI_PROXY_KEY}
     depends_on:
       db:
         condition: service_healthy

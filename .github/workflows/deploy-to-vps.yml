@@ -37,6 +37,7 @@ jobs:
           PG_PASSWORD=${{ secrets.PG_PASSWORD }}
           PG_PORT=${{ secrets.PG_PORT }}
           DEBUG=${{ secrets.DEBUG_PRODUCTION }}
+          RAPIDAPI_PROXY_KEY=${{ secrets.RAPIDAPI_PROXY_KEY }}
           # end of envfile
           EOF
           # see end result of envfile
