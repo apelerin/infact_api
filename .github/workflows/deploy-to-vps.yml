@@ -40,4 +40,6 @@ jobs:
           # end of envfile
           EOF
           # see end result of envfile
-          DOCKER_BUILDKIT=1 docker compose up -d
+          docker compose stop
+          DOCKER_BUILDKIT=1 docker compose build
+          docker compose up -d
