@@ -11,7 +11,7 @@ Launch the seeder with:
 
 Launch one crawler:
 
-`docker exec -ti [web_container_name] python crawl seed --name=crawler_name`
+`docker exec -ti [web_container_name] python manage.py crawl --name=crawler_name`
 
 
 Launch demo: 
