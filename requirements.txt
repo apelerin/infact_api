@@ -53,3 +53,4 @@ MarkupSafe==2.1.1
 uritemplate==4.1.1
 PyYAML==6.0
 djangorestframework-api-key==2.*
+flake8==4.0.1
