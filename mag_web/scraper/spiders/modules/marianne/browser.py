@@ -1,3 +1,4 @@
+# flake8: noqa: E501
 import scrapy
 from scrapy import Spider
 from api.models import Journal, Article

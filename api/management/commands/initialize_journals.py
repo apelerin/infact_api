@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
-from api.models import Article, Journal, InformationHub, Category
-from django.utils import timezone
+from api.models import Journal
 import logging
+
 logging.basicConfig(level=logging.INFO)
 
 JOURNALS = [
@@ -9,6 +9,7 @@ JOURNALS = [
         'name': 'Marianne',
     },
 ]
+
 
 class Command(BaseCommand):
     help = "Initialize the database with journals or add the ones that are missing"
@@ -32,10 +33,12 @@ def run_initialize(mode):
     elif mode == 'fill':
         fill_journals()
 
+
 def initialize_journals():
     for journal in JOURNALS:
         Journal.objects.create(**journal)
     logging.info('Journals initialized')
+
 
 def fill_journals():
     for journal in JOURNALS:

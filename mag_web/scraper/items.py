@@ -3,7 +3,6 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-import scrapy
 from scrapy_djangoitem import DjangoItem
 
 from api.models import Article, Journal, InformationHub, Category

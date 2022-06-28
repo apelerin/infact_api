@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from api.models import Article, Journal, InformationHub, Category
 from django.utils import timezone
 import logging
+
 logging.basicConfig(level=logging.INFO)
 
 # python manage.py seed --mode=refresh
@@ -11,6 +12,7 @@ MODE_REFRESH = 'refresh'
 
 """ Clear all data and do not create any object """
 MODE_CLEAR = 'clear'
+
 
 class Command(BaseCommand):
     help = "seed database for testing and development."

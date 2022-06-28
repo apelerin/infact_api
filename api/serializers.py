@@ -26,4 +26,3 @@ class InformationHubSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = InformationHub
         fields = ['title', 'original_source_link', 'articles']
-        

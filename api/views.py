@@ -2,7 +2,8 @@ import os
 from rest_framework.permissions import BasePermission
 from api.models import Article, InformationHub, Category, Journal
 from rest_framework import viewsets
-from api.serializers import ArticleSerializer, CategorySerializer, InformationHubSerializer, JournalSerializer
+from api.serializers import (ArticleSerializer, CategorySerializer,
+                             InformationHubSerializer, JournalSerializer)
 from rest_framework_api_key.permissions import HasAPIKey
 
 from infact_server.settings import DEBUG
