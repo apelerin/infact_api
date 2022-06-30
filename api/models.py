@@ -25,7 +25,7 @@ class Article(models.Model):
     author = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     date = models.DateTimeField()
-    body = models.JSONField()
+    body = models.TextField()
     link = models.CharField(max_length=255)
     image_link = models.CharField(max_length=255)
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)

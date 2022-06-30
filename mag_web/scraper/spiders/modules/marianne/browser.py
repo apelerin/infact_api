@@ -30,10 +30,9 @@ class MarianneBrowser(Spider):
 
         item['image_link'] = response.css('.article__header').css(
             '.responsive-image::attr(src)').extract_first()
-        item['author'] = response.xpath(
-            '//address[@class="article__details"]//a[@rel="author"]/span/text()').get()
-        # item['body'] = self.get_body(response)
-        item['body'] = {'abstract': self.get_abstract(response)}
+        item['author'] = response.xpath('//address[@class="article__details"]//span/text()').get()
+
+        item['body'] = self.get_body(response)
         item['journal'] = self.journal
         item['date'] = datetime.now()
 
@@ -44,10 +43,11 @@ class MarianneBrowser(Spider):
 
     def get_body(self, response):
         # TODO: Parse the entire body of the article
-        abstract = self.get_abstract(response)
-        body = [abstract]
-        return body
+        body = [response.xpath('//h2[@class="article__headline article__item"]/text()').get()]
 
-    def get_abstract(self, response):
-        abstract = response.xpath('//h2[@class="article__headline article__item"]/text()').get()
-        return abstract
+        raw_body = response.xpath('//article/div/div[@class="article-body js-article-body"]/child::node()[not(self::strong)]//text()')
+        for raw_paragraph in raw_body:
+            paragraph = raw_paragraph.get()
+            if paragraph:
+                body.append(paragraph)
+        return ''.join(body)
