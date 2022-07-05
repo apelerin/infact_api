@@ -35,6 +35,7 @@ class MarianneBrowser(Spider):
         item['body'] = self.get_body(response)
         item['journal'] = self.journal
         item['date'] = datetime.now()
+        item['link'] = response.request.url
 
         # Temporary solution to save an Article in database.
         # TODO: Use pipelines to save articles in database
