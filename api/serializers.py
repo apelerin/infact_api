@@ -12,7 +12,7 @@ class JournalSerializer(serializers.HyperlinkedModelSerializer):
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
-        fields = ['name', 'id']
+        fields = ['name', 'match', 'id']
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):

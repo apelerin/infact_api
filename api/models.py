@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class Journal(models.Model):
@@ -13,6 +14,7 @@ class Journal(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
+    match = ArrayField(models.TextField(), default=list)
 
     class Meta:
         ordering = ['name']

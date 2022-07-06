@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.models import Journal
+from api.models import Journal, Category
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -7,6 +7,25 @@ logging.basicConfig(level=logging.INFO)
 JOURNALS = [
     {
         'name': 'Marianne',
+    },
+]
+
+CATEGORIES = [
+    {
+        'name': 'Économie',
+        'match': ['Économie', 'Entreprises', 'Finance']
+    },
+    {
+        'name': 'Société',
+        'match': ['Société', 'Justice', 'Santé', 'Logement']
+    },
+    {
+        'name': 'Politique',
+        'match': ['Politique', 'Gouvernement']
+    },
+    {
+        'name': 'Culture',
+        'match': ['Culture', 'Cinéma', 'Télévision', 'Littérature']
     },
 ]
 
@@ -30,14 +49,33 @@ def run_initialize(mode):
     """
     if mode == 'initialize':
         initialize_journals()
+        initialize_categories()
     elif mode == 'fill':
         fill_journals()
+        fill_categories()
 
 
 def initialize_journals():
     for journal in JOURNALS:
         Journal.objects.create(**journal)
     logging.info('Journals initialized')
+
+
+def initialize_categories():
+    for category in CATEGORIES:
+        Category.objects.create(**category)
+    logging.info('Categories initialized')
+
+
+def fill_categories():
+    for category in CATEGORIES:
+        try:
+            Category.objects.get(name=category['name'])
+        except Category.DoesNotExist:
+            Category.objects.create(**category)
+            logging.info('Category {} added'.format(category['name']))
+        else:
+            pass
 
 
 def fill_journals():
