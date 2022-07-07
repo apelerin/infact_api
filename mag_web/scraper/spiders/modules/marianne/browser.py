@@ -7,6 +7,9 @@ from datetime import datetime
 
 
 # TODO: Factorize browser and article page to harmonize when multiple modules exists
+from mag_web.scraper.spiders.tools import match_category
+
+
 class MarianneBrowser(Spider):
     name = "marianne"
     start_urls = ["https://www.marianne.net/"]
@@ -21,12 +24,13 @@ class MarianneBrowser(Spider):
     def parse_article(self, response):
         """ Scrapes the article page and returns a ScraperItemArticle object """
         item = ScraperItemArticle()
-        item['title'] = response.xpath('//h1[@class="article__heading"]/text()').get()
+        title = response.xpath('//h1[@class="article__heading"]/text()').get()
+        item['title'] = title
 
         # Basic handling of pre-existing articles
         # TODO : Use a better approach with multiple fields
-        if Article.objects.filter(title=item['title']).exists():
-            return
+        #if Article.objects.filter(title=item['title']).exists():
+            # return
 
         item['image_link'] = response.css('.article__header').css(
             '.responsive-image::attr(src)').extract_first()
@@ -40,6 +44,13 @@ class MarianneBrowser(Spider):
         # Temporary solution to save an Article in database.
         # TODO: Use pipelines to save articles in database
         item.save()
+
+        raw_category = response.xpath(
+            '//div[@class="breadcrumb article__item"]/span[@class="breadcrumb__item"]/span[@class="breadcrumb__item"]/a[@class="breadcrumb__label breadcrumb__label--link"]/text()').get()
+        category = match_category(raw_category.strip())
+        if category is not None:
+            article = Article.objects.get(title=title)
+            article.categories.add(category)
         # return item
 
     def get_body(self, response):
