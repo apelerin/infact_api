@@ -29,8 +29,8 @@ class MarianneBrowser(Spider):
 
         # Basic handling of pre-existing articles
         # TODO : Use a better approach with multiple fields
-        #if Article.objects.filter(title=item['title']).exists():
-            # return
+        if Article.objects.filter(title=item['title']).exists():
+            return
 
         item['image_link'] = response.css('.article__header').css(
             '.responsive-image::attr(src)').extract_first()
