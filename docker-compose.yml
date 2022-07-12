@@ -40,7 +40,7 @@ services:
         condition: service_healthy
     labels:
       ofelia.enabled: "true"
-      ofelia.job-exec.app.schedule: "@every 3h"
+      ofelia.job-exec.app.schedule: "@every 1h"
       ofelia.job-exec.app.command: "python manage.py synchronise_actuality"
 
   ofelia:
