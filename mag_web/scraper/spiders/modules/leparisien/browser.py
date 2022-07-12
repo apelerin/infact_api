@@ -1,4 +1,6 @@
 # flake8: noqa: E501
+from datetime import datetime
+
 import scrapy
 from scrapy import Spider
 from api.models import Journal, Article
@@ -9,42 +11,42 @@ from mag_web.scraper.items import ScraperItemArticle
 from mag_web.scraper.spiders.tools import match_category
 
 
-class MarianneBrowser(Spider):
-    name = "leparisien"
+class LeParisienBrowser(Spider):
+    name = "Le Parisien"
     start_urls = ["https://www.leparisien.fr/"]
     journal = Journal.objects.get(name="Le Parisien")
 
     def parse(self, response, **kwargs):
-        articles_link = response.xpath('//section[@id="left"]/div[not(contains(@class, "ad_element"))]/div[not(.//span[@class="tag label abo"]) and not(contains(@class, "sub-anchor-body")) and not(contains(@class, "ad_element"))]').getall()
-        for articles_link in articles_link:
-            url = response.urljoin(articles_link)
-            yield scrapy.Request(url=url, callback=self.parse_article)
+        articles_link = response.xpath('//section[@id="left"]/div[not(contains(@class, "ad_element"))]/div[not(.//span[@class="tag label abo"]) and not(contains(@class, "sub-anchor-body")) and not(contains(@class, "ad_element")) and not(.//div[@class="icon svg video"])]/a/@href').getall()
+        for url in articles_link:
+            yield scrapy.Request(url='https:' + url, callback=self.parse_article)
 
     def parse_article(self, response):
         """ Scrapes the article page and returns a ScraperItemArticle object """
-        item = ScraperItemArticle()
-        title = None
-        item['title'] = title
 
-        # Basic handling of pre-existing articles
-        # TODO : Use a better approach with multiple fields
-        if Article.objects.filter(title=item['title']).exists():
+        title = response.xpath('//h1[@class="title_xl col margin_bottom_headline"]/text()').get()
+        if Article.objects.filter(link=response.request.url).exists() or "DIRECT" in title:
             return
 
-        item['image_link'] = None
-        item['author'] = None
 
-        item['body'] = None
-        item['journal'] = None
-        item['link'] = None
-        item['date'] = None
+        item = ScraperItemArticle()
+
+        item['title'] = title
+
+        item['image_link'] = "https://www.leparisien.fr/" + response.xpath('//div[@id="primary_left"]//img[@class="image "]/@src').get()
+        item['author'] = response.xpath('//span[@class="author ui_bold"]/span/text()').get()
+
+        item['body'] = self.get_body(response)
+        item['journal'] = self.journal
+        item['link'] = response.request.url
+        # todo use response.xpath('//div[@class="timestamp width_full margin_top_ten ui"]/text()').getall() and check with regex
+        item['date'] = datetime.now()
 
         # Temporary solution to save an Article in database.
         # TODO: Use pipelines to save articles in database
         item.save()
 
-        raw_category = response.xpath(
-            '//div[@class="breadcrumb article__item"]/span[@class="breadcrumb__item"]/span[@class="breadcrumb__item"]/a[@class="breadcrumb__label breadcrumb__label--link"]/text()').get()
+        raw_category = response.xpath('//div[@class="breadcrumb"]/a/text()').getall()[0]
         category = match_category(raw_category.strip())
         if category is not None:
             article = Article.objects.get(title=title)
@@ -52,12 +54,5 @@ class MarianneBrowser(Spider):
         # return item
 
     def get_body(self, response):
-        # TODO: Parse the entire body of the article
-        body = [response.xpath('//h2[@class="article__headline article__item"]/text()').get()]
-
-        raw_body = response.xpath('//article/div/div[@class="article-body js-article-body"]/child::node()[not(self::strong)]//text()')
-        for raw_paragraph in raw_body:
-            paragraph = raw_paragraph.get()
-            if paragraph:
-                body.append(paragraph)
-        return ''.join(body)
+        raw_body = response.xpath('//section/p[@class="paragraph text_align_left"]//text()').getall()
+        return ''.join(raw_body)

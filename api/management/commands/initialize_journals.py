@@ -28,7 +28,15 @@ CATEGORIES = [
     },
     {
         'name': 'Culture',
-        'match': ['Culture', 'Cinéma', 'Télévision', 'Littérature']
+        'match': ['Culture', 'Cinéma', 'Télévision', 'Littérature', 'Art']
+    },
+    {
+        'name': 'Sciences',
+        'match': ['Sciences', 'Science', 'Technologie', 'Technologies', 'Robotique', 'Domotique', 'Informatique']
+    },
+    {
+        'name': 'Sport',
+        'match': ['Sport']
     },
 ]
 

@@ -23,14 +23,13 @@ class MarianneBrowser(Spider):
 
     def parse_article(self, response):
         """ Scrapes the article page and returns a ScraperItemArticle object """
+
+        if Article.objects.filter(link=response.request.url).exists():
+            return
+
         item = ScraperItemArticle()
         title = response.xpath('//h1[@class="article__heading"]/text()').get()
         item['title'] = title
-
-        # Basic handling of pre-existing articles
-        # TODO : Use a better approach with multiple fields
-        if Article.objects.filter(title=item['title']).exists():
-            return
 
         item['image_link'] = response.css('.article__header').css(
             '.responsive-image::attr(src)').extract_first()
