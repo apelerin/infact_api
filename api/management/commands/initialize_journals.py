@@ -8,6 +8,9 @@ JOURNALS = [
     {
         'name': 'Marianne',
     },
+    {
+        'name': 'Le Parisien',
+    },
 ]
 
 CATEGORIES = [
